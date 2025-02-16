@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { S3Module } from 'nestjs-s3';
 import config from 'src/config/config';
+import { UserModule } from '../user/user.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import config from 'src/config/config';
         },
       }),
     }),
+    UserModule,
   ],
 })
 export class AppModule {}
