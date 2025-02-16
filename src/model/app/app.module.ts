@@ -3,6 +3,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { S3Module } from 'nestjs-s3';
 import config from 'src/config/config';
 import { UserModule } from '../user/user.module';
+import { AuthModule } from '../auth/auth.module';
+import { TokenModule } from '../token/token.module';
 
 @Module({
   imports: [
@@ -25,6 +27,8 @@ import { UserModule } from '../user/user.module';
       }),
     }),
     UserModule,
+    AuthModule,
+    TokenModule,
   ],
 })
 export class AppModule {}
