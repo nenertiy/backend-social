@@ -14,7 +14,7 @@ export class UserController {
   @ApiOperation({ summary: 'Получить профиль через JWT' })
   @ApiBearerAuth()
   @Get('profile')
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   async getMe(@DecodeUser() user: UserWithoutPassword) {
     return user;
   }
@@ -22,7 +22,7 @@ export class UserController {
   @ApiOperation({ summary: 'Обновить профиль' })
   @ApiBearerAuth()
   @Patch()
-  // @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard)
   async updateUser(
     @DecodeUser() user: UserWithoutPassword,
     @Body() dto: UpdateUserDto,
