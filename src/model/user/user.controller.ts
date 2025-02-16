@@ -4,6 +4,7 @@ import { DecodeUser } from 'src/common/decorators/decode-user.decorator';
 import { UserWithoutPassword } from 'src/common/types/user';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @Controller('user')
 @ApiTags('User')
@@ -13,7 +14,7 @@ export class UserController {
   @ApiOperation({ summary: 'Получить профиль через JWT' })
   @ApiBearerAuth()
   @Get('profile')
-  @UseGuards()
+  // @UseGuards(JwtAuthGuard)
   async getMe(@DecodeUser() user: UserWithoutPassword) {
     return user;
   }
@@ -21,7 +22,7 @@ export class UserController {
   @ApiOperation({ summary: 'Обновить профиль' })
   @ApiBearerAuth()
   @Patch()
-  @UseGuards()
+  // @UseGuards(JwtAuthGuard)
   async updateUser(
     @DecodeUser() user: UserWithoutPassword,
     @Body() dto: UpdateUserDto,
@@ -37,7 +38,7 @@ export class UserController {
 
   @ApiOperation({ summary: 'Получить пользователя по username' })
   @Get(':username')
-  async findByUsername(@Param() username: string) {
+  async findByUsername(@Param('username') username: string) {
     return this.userService.findByUsername(username);
   }
 
