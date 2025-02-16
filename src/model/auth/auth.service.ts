@@ -20,7 +20,7 @@ export class AuthService {
   ) {
     await Promise.all([
       this.setCookie(res, { token: tokens.accessToken, name: 'accessToken' }),
-      this.setCookie(res, { token: tokens.refreshToken, name: 'accessToken' }),
+      this.setCookie(res, { token: tokens.refreshToken, name: 'refreshToken' }),
     ]);
   }
 
