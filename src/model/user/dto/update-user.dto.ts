@@ -21,4 +21,9 @@ export class UpdateUserDto {
   @IsString()
   @IsOptional()
   walletAddress: string;
+
+  @ApiProperty({ example: 'test' })
+  @IsString()
+  @IsOptional()
+  github: string;
 }

@@ -39,6 +39,10 @@ export class UserService {
     return this.userRepository.findById(id);
   }
 
+  async findByGithub(github: string) {
+    return this.userRepository.findByGithub(github);
+  }
+
   async findAllUsers() {
     return this.userRepository.findAllUsers();
   }
