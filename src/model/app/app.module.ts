@@ -5,6 +5,10 @@ import config from 'src/config/config';
 import { UserModule } from '../user/user.module';
 import { AuthModule } from '../auth/auth.module';
 import { TokenModule } from '../token/token.module';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { PostModule } from '../post/post.module';
+import { PostResolver } from '../post/post.resolver';
 
 @Module({
   imports: [
@@ -26,6 +30,12 @@ import { TokenModule } from '../token/token.module';
         },
       }),
     }),
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      autoSchemaFile: 'schema.gql',
+      playground: true,
+    }),
+    PostModule,
     UserModule,
     AuthModule,
     TokenModule,
