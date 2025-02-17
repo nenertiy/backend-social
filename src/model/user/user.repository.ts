@@ -25,6 +25,13 @@ export class UserRepository {
     });
   }
 
+  async findByGithub(github: string) {
+    return this.prisma.user.findUnique({
+      where: { github },
+      select: USER_SELECT,
+    });
+  }
+
   async findAllUsers() {
     return this.prisma.user.findMany({ select: USER_SELECT });
   }
