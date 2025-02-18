@@ -1,14 +1,13 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { S3Module } from 'nestjs-s3';
-import config from 'src/config/config';
 import { UserModule } from '../user/user.module';
 import { AuthModule } from '../auth/auth.module';
 import { TokenModule } from '../token/token.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { PostModule } from '../post/post.module';
-import { PostResolver } from '../post/post.resolver';
+import { GithubModule } from '../github/github.module';
+import config from 'src/config/config';
 
 @Module({
   imports: [
@@ -30,15 +29,15 @@ import { PostResolver } from '../post/post.resolver';
         },
       }),
     }),
-    GraphQLModule.forRoot<ApolloDriverConfig>({
-      driver: ApolloDriver,
-      autoSchemaFile: 'schema.gql',
-      playground: true,
-    }),
-    PostModule,
+    // GraphQLModule.forRoot<ApolloDriverConfig>({
+    //   driver: ApolloDriver,
+    //   autoSchemaFile: 'schema.gql',
+    //   playground: true,
+    // }),
     UserModule,
     AuthModule,
     TokenModule,
+    GithubModule,
   ],
 })
 export class AppModule {}
