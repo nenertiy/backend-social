@@ -29,15 +29,16 @@ import config from 'src/config/config';
         },
       }),
     }),
+
+    UserModule,
+    AuthModule,
+    TokenModule,
+    GithubModule,
     // GraphQLModule.forRoot<ApolloDriverConfig>({
     //   driver: ApolloDriver,
     //   autoSchemaFile: 'schema.gql',
     //   playground: true,
     // }),
-    UserModule,
-    AuthModule,
-    TokenModule,
-    GithubModule,
   ],
 })
 export class AppModule {}
