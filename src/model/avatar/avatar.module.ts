@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
 import { AvatarService } from './avatar.service';
-import { AvatarController } from './avatar.controller';
+import { PrismaService } from '../app/prisma.service';
+import { AvatarRepository } from './avatar.repository';
 
 @Module({
-  controllers: [AvatarController],
-  providers: [AvatarService],
+  providers: [AvatarService, AvatarRepository, PrismaService],
+  exports: [AvatarService, AvatarRepository],
 })
 export class AvatarModule {}

@@ -5,8 +5,10 @@ import { UserController } from './user.controller';
 import { UserRepository } from './user.repository';
 import { PasswordService } from '../password/password.service';
 import { PrismaService } from '../app/prisma.service';
+import { AvatarModule } from '../avatar/avatar.module';
 
 @Module({
+  imports: [AvatarModule],
   controllers: [UserController],
   providers: [
     UserService,
