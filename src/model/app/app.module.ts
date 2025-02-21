@@ -34,11 +34,12 @@ import config from 'src/config/config';
     AuthModule,
     TokenModule,
     GithubModule,
-    // GraphQLModule.forRoot<ApolloDriverConfig>({
-    //   driver: ApolloDriver,
-    //   autoSchemaFile: 'schema.gql',
-    //   playground: true,
-    // }),
+    GraphQLModule.forRoot({
+      driver: ApolloDriver,
+      autoSchemaFile: 'schema.gql',
+      playground: true,
+      uploads: true,
+    }),
   ],
 })
 export class AppModule {}
