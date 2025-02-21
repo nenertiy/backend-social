@@ -18,12 +18,12 @@ export class PostResolver {
     return this.postService.findPost(postId);
   }
 
-  @Mutation(() => Post, { name: 'createPost' })
-  async createPost(
-    @Args('data') data: CreatePostDto,
-    @Args({ name: 'file', type: () => GraphQLUpload, nullable: true })
-    file?: FileUpload,
-  ) {
-    return this.postService.createPost(data, file);
-  }
+  // @Mutation(() => Post, { name: 'createPost' })
+  // async createPost(
+  //   @Args('data') data: CreatePostDto,
+  //   @Args({ name: 'file', type: () => GraphQLUpload, nullable: true })
+  //   file?: Promise<FileUpload>,
+  // ) {
+  //   return this.postService.createPost(data, file);
+  // }
 }

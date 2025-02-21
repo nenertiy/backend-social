@@ -5,9 +5,10 @@ import { UserModule } from '../user/user.module';
 import { AuthModule } from '../auth/auth.module';
 import { TokenModule } from '../token/token.module';
 import { GraphQLModule } from '@nestjs/graphql';
-import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { ApolloDriver } from '@nestjs/apollo';
 import { GithubModule } from '../github/github.module';
 import config from 'src/config/config';
+import { PostModule } from '../post/post.module';
 
 @Module({
   imports: [
@@ -34,6 +35,7 @@ import config from 'src/config/config';
     AuthModule,
     TokenModule,
     GithubModule,
+    PostModule,
     GraphQLModule.forRoot({
       driver: ApolloDriver,
       autoSchemaFile: 'schema.gql',

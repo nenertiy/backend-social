@@ -2,13 +2,13 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './model/app/app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as cookieParser from 'cookie-parser';
-import fileUpload from 'express-fileupload';
+import * as fileUpload from 'express-fileupload';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('api');
 
-  app.use(fileUpload({ maxFileSize: 10000000, maxFiles: 5 }));
+  app.use(fileUpload({ limits: { fileSize: 10 * 1024 * 1024 } }));
 
   app.use(cookieParser());
 
@@ -17,7 +17,7 @@ async function bootstrap() {
   const port = process.env.PORT || 3000;
 
   const config = new DocumentBuilder()
-    .setTitle('Socail')
+    .setTitle('Social')
     .setDescription('The Social API description')
     .setVersion('1.0')
     .addTag('Social')
