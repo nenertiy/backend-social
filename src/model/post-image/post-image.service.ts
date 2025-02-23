@@ -1,6 +1,6 @@
 import { ConfigService } from '@nestjs/config';
 import { InjectS3, S3 } from 'nestjs-s3';
-import { PostImageReposotory } from './post-image.repository';
+import { PostImageRepository } from './post-image.repository';
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 
 @Injectable()
@@ -10,36 +10,34 @@ export class PostImageService {
   constructor(
     @InjectS3() private readonly s3: S3,
     private readonly configService: ConfigService,
-    private readonly postImageReposotory: PostImageReposotory,
+    private readonly postImageRepository: PostImageRepository,
   ) {}
 
   async onModuleInit() {
     this.bucketName = this.configService.get('S3_BUCKET_NAME');
   }
 
-  async createAvatar(postId: string, file: Express.Multer.File) {
-    const filename = `post-image/${postId}-image.png`;
-    file.filename = filename;
-
-    await this.postImageReposotory.delete(postId);
+  async createImage(postId: string, file: Express.Multer.File) {
+    const filename = `post-image/${postId}-${Date.now()}.png`;
 
     try {
       await this.s3.putObject({
         Bucket: this.bucketName,
         Key: filename,
         Body: file.buffer,
+        ContentType: file.mimetype,
       });
     } catch (error) {
-      throw new InternalServerErrorException('Failed to upload avatar to S3');
+      throw new InternalServerErrorException('Failed to upload image to S3');
     }
 
     const url = `${this.configService.get('S3_ENDPOINT')}/${this.bucketName}/${filename}`;
 
-    return this.postImageReposotory.create(postId, url, filename);
+    return this.postImageRepository.create(postId, url, filename);
   }
 
-  async deleteAvatar(postId: string) {
-    const image = await this.postImageReposotory.delete(postId);
+  async deleteImage(postId: string) {
+    const image = await this.postImageRepository.delete(postId);
 
     if (image) {
       try {

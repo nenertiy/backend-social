@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../app/prisma.service';
 
 @Injectable()
-export class PostImageReposotory {
+export class PostImageRepository {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(postId: string, url: string, filename: string) {
