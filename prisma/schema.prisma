@@ -14,24 +14,38 @@ datasource db {
 }
 
 model User {
-  id            String  @id @default(uuid())
-  username      String  @unique
-  email         String  @unique
+  id            String    @id @default(uuid())
+  username      String    @unique
+  email         String    @unique
   password      String
-  walletAddress String? @map("wallet_address")
-  github        String? @unique
+  walletAddress String?   @map("wallet_address")
+  github        String?   @unique
   posts         Post[]
+  comments      Comment[]
   avatar        File[]
 }
 
 model Post {
-  id        String   @id @default(uuid())
+  id        String    @id @default(uuid())
   title     String
   content   String
-  user      User     @relation(fields: [userId], references: [id])
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String
-  createdAt DateTime @default(now()) @map("created_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at")
   file      File[]
+  comments  Comment[]
+}
+
+model Comment {
+  id        String   @id @default(uuid())
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  content   String   @db.Text
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
 }
 
 model File {
