@@ -38,35 +38,9 @@ export class PostService {
 
     if (file) {
       const uploadedFile = await file;
-      await this.postImageService.createAvatar(post.id, file);
+      await this.postImageService.createImage(post.id, uploadedFile);
     }
 
     return this.findPost(post.id);
   }
-
-  // private async uploadImg(postId: string, file: FileUpload) {
-  //   const filename = `post/${postId}-${Date.now()}-${file.filename}`;
-  //   const bucket = this.bucketName;
-
-  //   try {
-  //     await this.s3.putObject({
-  //       Bucket: bucket,
-  //       Key: filename,
-  //       Body: file.createReadStream(),
-  //       ContentType: file.mimetype,
-  //     });
-  //   } catch (error) {
-  //     throw new InternalServerErrorException('Failed to upload image to S3');
-  //   }
-
-  //   const url = `${this.configService.get('S3_ENDPOINT')}/${bucket}/${filename}`;
-
-  //   return this.prisma.file.create({
-  //     data: {
-  //       url,
-  //       filename,
-  //       postId,
-  //     },
-  //   });
-  // }
 }
