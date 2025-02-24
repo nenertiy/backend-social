@@ -10,7 +10,7 @@ export class PostRepository {
   async findOnePost(postId: string) {
     return this.prisma.post.findMany({
       where: { id: postId },
-      include: { file: true },
+      include: { file: true, comments: true },
     });
   }
 
