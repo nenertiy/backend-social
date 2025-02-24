@@ -28,4 +28,9 @@ export class PostResolver {
   ) {
     return this.postService.createPost(data, file);
   }
+
+  @Mutation(() => Post, { name: 'deletePost' })
+  async deleteComment(@Args('id', { type: () => String }) id: string) {
+    return this.postService.deletePost(id);
+  }
 }

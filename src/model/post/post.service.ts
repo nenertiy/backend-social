@@ -43,4 +43,8 @@ export class PostService {
 
     return this.findPost(post.id);
   }
+
+  async deletePost(postId: string) {
+    return this.postRepository.deletePost(postId);
+  }
 }
