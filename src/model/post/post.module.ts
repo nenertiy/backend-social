@@ -8,5 +8,6 @@ import { PostImageModule } from '../post-image/post-image.module';
 @Module({
   imports: [PostImageModule],
   providers: [PostResolver, PostService, PostRepository, PrismaService],
+  exports: [PostService],
 })
 export class PostModule {}
