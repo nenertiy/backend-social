@@ -9,6 +9,7 @@ import { ApolloDriver } from '@nestjs/apollo';
 import { GithubModule } from '../github/github.module';
 import config from 'src/config/config';
 import { PostModule } from '../post/post.module';
+import { CommentModule } from '../comment/comment.module';
 
 @Module({
   imports: [
@@ -30,12 +31,12 @@ import { PostModule } from '../post/post.module';
         },
       }),
     }),
-
     UserModule,
     AuthModule,
     TokenModule,
     GithubModule,
     PostModule,
+    CommentModule,
     GraphQLModule.forRoot({
       driver: ApolloDriver,
       autoSchemaFile: 'schema.gql',
