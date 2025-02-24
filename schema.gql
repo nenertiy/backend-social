@@ -37,6 +37,7 @@ type Query {
 
 type Mutation {
   createPost(data: CreatePostDto!, file: Upload): Post!
+  deletePost(id: String!): Post!
   createComment(data: CreateCommentDto!): Comment!
   deleteComment(id: String!): Comment!
 }
