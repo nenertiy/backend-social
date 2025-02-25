@@ -3,17 +3,26 @@ import { AppModule } from './model/app/app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as cookieParser from 'cookie-parser';
 import * as fileUpload from 'express-fileupload';
-import * as graphqlUploadExpress from 'graphql-upload/graphqlUploadExpress.js';
+import * as express from 'express';
+import { ValidationPipe } from '@nestjs/common';
+// import * as graphqlUploadExpress from 'graphql-upload/graphqlUploadExpress.js';
 // import { graphqlUploadExpress } from 'graphql-upload-ts';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('api');
 
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
+
   app.use(fileUpload({ limits: { fileSize: 10 * 1024 * 1024 } }));
-  app.use(graphqlUploadExpress({ maxFileSize: 10 * 124 * 1024 }));
+  // app.use(graphqlUploadExpress());
 
   app.use(cookieParser());
+
+  app.use(require('multer')().any());
+
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
 
   app.enableCors({ origin: true, credentials: true });
 
