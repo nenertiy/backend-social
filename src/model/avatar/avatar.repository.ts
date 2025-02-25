@@ -9,6 +9,10 @@ export class AvatarRepository {
     return this.prisma.file.create({ data: { url, filename, userId } });
   }
 
+  async findByUserId(userId: string) {
+    return this.prisma.file.findFirst({ where: { userId } });
+  }
+
   async delete(userId: string) {
     const avatar = await this.prisma.file.findFirst({
       where: { userId },
@@ -18,6 +22,4 @@ export class AvatarRepository {
       return this.prisma.file.delete({ where: { id: avatar.id } });
     }
   }
-
-  async existsByUserId(userId: string) {}
 }

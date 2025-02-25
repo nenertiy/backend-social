@@ -1,11 +1,13 @@
 import { AvatarService } from './../avatar/avatar.service';
 import {
+  BadRequestException,
   Body,
   Controller,
   Delete,
   Get,
   Param,
   Patch,
+  Req,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -74,11 +76,26 @@ export class UserController {
   @ApiConsumes('multipart/form-data')
   @Patch('avatar')
   @UseGuards(JwtAuthGuard)
-  @UseInterceptors(FileInterceptor('file', multerOptions))
+  @UseInterceptors(
+    FileInterceptor('file', {
+      // storage: multer.memoryStorage(),
+      // limits: { fileSize: 5 * 1024 * 1024 },
+    }),
+  )
   async uploadAvatar(
+    @Req() req: Request & { file?: Express.Multer.File },
     @DecodeUser() user: UserWithoutPassword,
     @UploadedFile() file: Express.Multer.File,
   ) {
+    console.log('Headers:', req.headers);
+    console.log('Request body:', req.body);
+    console.log('File:', req.file);
+    console.log('File:', file);
+
+    if (!file) {
+      throw new BadRequestException('File is missing');
+    }
+
     return this.avatarService.createAvatar(user.id, file);
   }
 
