@@ -3,13 +3,10 @@ import { AppModule } from './model/app/app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import * as cookieParser from 'cookie-parser';
-import { graphqlUploadExpress } from 'graphql-upload-ts';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix('api');
-
-  app.use(graphqlUploadExpress({ maxFileSize: 10 * 1000 * 1000 }));
 
   app.use(cookieParser());
 

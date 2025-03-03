@@ -45,7 +45,6 @@ type Mutation {
 input CreatePostDto {
   title: String!
   content: String!
-  userId: String!
 }
 
 """The `Upload` scalar type represents a file upload."""

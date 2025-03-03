@@ -1,8 +1,12 @@
 import { PostImageService } from './../post-image/post-image.service';
 import { PostRepository } from './post.repository';
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto';
-import { FileUpload } from 'graphql-upload-ts';
 
 @Injectable()
 export class PostService {
@@ -33,8 +37,12 @@ export class PostService {
     return posts;
   }
 
-  async createPost(data: CreatePostDto, file?: Express.Multer.File) {
-    const post = await this.postRepository.createPost(data);
+  async createPost(
+    userId: string,
+    data: CreatePostDto,
+    file?: Express.Multer.File,
+  ) {
+    const post = await this.postRepository.createPost(userId, data);
 
     if (file) {
       const uploadedFile = await file;
@@ -45,6 +53,10 @@ export class PostService {
   }
 
   async deletePost(postId: string) {
+    const post = await this.postRepository.findOnePost(postId);
+    if (!post) {
+      throw new NotFoundException();
+    }
     return this.postRepository.deletePost(postId);
   }
 }

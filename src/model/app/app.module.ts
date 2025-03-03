@@ -5,8 +5,6 @@ import { UserModule } from '../user/user.module';
 import { AuthModule } from '../auth/auth.module';
 import { TokenModule } from '../token/token.module';
 import { GithubModule } from '../github/github.module';
-import { GraphQLModule } from '@nestjs/graphql';
-import { ApolloDriver } from '@nestjs/apollo';
 import { PostModule } from '../post/post.module';
 import { CommentModule } from '../comment/comment.module';
 import { AvatarModule } from '../avatar/avatar.module';
@@ -38,16 +36,7 @@ import config from 'src/config/config';
     TokenModule,
     GithubModule,
     PostModule,
-    CommentModule,
-    GraphQLModule.forRoot({
-      driver: ApolloDriver,
-      autoSchemaFile: 'schema.gql',
-      playground: true,
-      uploads: {
-        maxFileSize: 10 * 1024 * 1024,
-        maxFiles: 1,
-      },
-    }),
+    // CommentModule,
   ],
 })
 export class AppModule {}

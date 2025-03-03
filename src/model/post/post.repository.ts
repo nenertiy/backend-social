@@ -18,8 +18,8 @@ export class PostRepository {
     return this.prisma.post.findMany({ include: { file: true } });
   }
 
-  async createPost(data: CreatePostDto) {
-    return this.prisma.post.create({ data });
+  async createPost(userId: string, data: CreatePostDto) {
+    return this.prisma.post.create({ data: { ...data, userId } });
   }
 
   async deletePost(postId: string) {
