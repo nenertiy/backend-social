@@ -1,6 +1,5 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CommentRepository } from './comment.repository';
-import { CreateCommentDto } from './dto/create-comment.dto';
 import { PostService } from './../post/post.service';
 
 @Injectable()
@@ -10,23 +9,26 @@ export class CommentService {
     private readonly postService: PostService,
   ) {}
 
-  async create(dto: CreateCommentDto) {
-    const post = await this.postService.findPost(dto.postId);
+  async createComment(userId: string, postId: string, content: string) {
+    const post = await this.postService.findPost(postId);
     if (!post) {
       throw new Error('Post not found');
     }
-    return this.commentRepository.createComment(dto);
+    return this.commentRepository.createComment(userId, postId, content);
   }
 
-  async findComments(postId: string) {
+  async findAllComments(postId: string) {
     return this.commentRepository.findAllComment(postId);
   }
 
-  async deleteCommentsByPostId(postId: string) {
-    return this.commentRepository.deleteCommentsByPostId(postId);
-  }
-
-  async deleteComment(id: string) {
-    return this.commentRepository.deleteComment(id);
+  async deleteComment(userId: string, commentId: string) {
+    const comment = await this.commentRepository.findComment(commentId);
+    if (comment.userId !== userId) {
+      throw new HttpException(
+        'Delete comment is forbidden for you',
+        HttpStatus.FORBIDDEN,
+      );
+    }
+    return this.commentRepository.deleteComment(commentId);
   }
 }

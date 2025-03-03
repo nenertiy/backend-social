@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../app/prisma.service';
-import { CreateCommentDto } from './dto/create-comment.dto';
 
 @Injectable()
 export class CommentRepository {
@@ -10,12 +9,12 @@ export class CommentRepository {
     return this.prisma.comment.findMany({ where: { postId } });
   }
 
-  async createComment(data: CreateCommentDto) {
-    return this.prisma.comment.create({ data });
+  async createComment(userId: string, postId: string, content: string) {
+    return this.prisma.comment.create({ data: { userId, postId, content } });
   }
 
-  async deleteCommentsByPostId(postId: string) {
-    return this.prisma.comment.deleteMany({ where: { postId } });
+  async findComment(id: string) {
+    return this.prisma.comment.findUnique({ where: { id } });
   }
 
   async deleteComment(id: string) {
