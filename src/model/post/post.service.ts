@@ -5,6 +5,7 @@ import {
   HttpStatus,
   Injectable,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto';
 
@@ -52,10 +53,16 @@ export class PostService {
     return this.findPost(post.id);
   }
 
-  async deletePost(postId: string) {
+  async deletePost(userId, postId: string) {
     const post = await this.postRepository.findOnePost(postId);
     if (!post) {
       throw new NotFoundException();
+    }
+    if (post.userId !== userId) {
+      throw new HttpException(
+        'Delete post is forbidden for you',
+        HttpStatus.FORBIDDEN,
+      );
     }
     return this.postRepository.deletePost(postId);
   }

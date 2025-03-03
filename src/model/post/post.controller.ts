@@ -19,8 +19,8 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { ApiTags } from '@nestjs/swagger';
 
-@Controller('post')
 @ApiTags('Post')
+@Controller('post')
 export class PostController {
   constructor(private readonly postService: PostService) {}
 
@@ -60,7 +60,10 @@ export class PostController {
 
   @UseGuards(JwtAuthGuard)
   @Delete(':postId')
-  async deletePost(@Param('postId') postId: string) {
-    return this.postService.deletePost(postId);
+  async deletePost(
+    @DecodeUser() user: UserWithoutPassword,
+    @Param('postId') postId: string,
+  ) {
+    return this.postService.deletePost(user.id, postId);
   }
 }
