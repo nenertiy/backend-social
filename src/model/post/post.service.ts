@@ -7,6 +7,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto';
+import { UpdatePostDto } from './dto/update-post.dto';
 
 @Injectable()
 export class PostService {
@@ -50,6 +51,20 @@ export class PostService {
     }
 
     return this.findPost(post.id);
+  }
+
+  async updatePost(userId: string, postId: string, dto: UpdatePostDto) {
+    const post = await this.postRepository.findOnePost(postId);
+    if (!post) {
+      throw new NotFoundException();
+    }
+    if (post.userId !== userId) {
+      throw new HttpException(
+        'Delete post is forbidden for you',
+        HttpStatus.FORBIDDEN,
+      );
+    }
+    return this.postRepository.updatePost(postId, dto);
   }
 
   async deletePost(userId, postId: string) {
