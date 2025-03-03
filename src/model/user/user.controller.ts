@@ -59,16 +59,16 @@ export class UserController {
     return this.userService.findAllUsers();
   }
 
-  @ApiOperation({ summary: 'Получить пользователя по username' })
-  @Get(':username')
-  async findByUsername(@Param('username') username: string) {
-    return this.userService.findByUsername(username);
-  }
-
   @ApiOperation({ summary: 'Получить пользователя по id' })
   @Get(':id')
   async findById(@Param('id') id: string) {
     return this.userService.findById(id);
+  }
+
+  @ApiOperation({ summary: 'Получить пользователя по username' })
+  @Get('username/:username')
+  async findByUsername(@Param('username') username: string) {
+    return this.userService.findByUsername(username);
   }
 
   @ApiOperation({ summary: 'Добавить аватар пользователя' })
