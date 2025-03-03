@@ -3,10 +3,11 @@ import {
   Body,
   Controller,
   Delete,
+  FileTypeValidator,
   Get,
   Param,
+  ParseFilePipe,
   Patch,
-  Req,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -24,7 +25,6 @@ import { UserWithoutPassword } from 'src/common/types/user';
 import { UserService } from './user.service';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { AvatarService } from './../avatar/avatar.service';
-// import { multerOptions } from 'src/config/multer.config';
 
 @Controller('user')
 @ApiTags('User')
@@ -78,12 +78,21 @@ export class UserController {
   @Patch('avatar')
   @UseInterceptors(
     FileInterceptor('file', {
-      limits: { fileSize: 5 * 1024 * 1024 },
+      limits: { fileSize: 10 * 1024 * 1024 },
     }),
   )
   async uploadAvatar(
     @DecodeUser() user: UserWithoutPassword,
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFile(
+      new ParseFilePipe({
+        validators: [
+          new FileTypeValidator({
+            fileType: /^(image\/jpeg|image\/png)$/,
+          }),
+        ],
+      }),
+    )
+    file: Express.Multer.File,
   ) {
     if (!file) {
       throw new BadRequestException('File is missing');

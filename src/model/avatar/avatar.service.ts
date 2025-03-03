@@ -4,6 +4,7 @@ import {
   BadRequestException,
   Injectable,
   InternalServerErrorException,
+  NotFoundException,
   OnModuleInit,
 } from '@nestjs/common';
 import {
@@ -49,7 +50,7 @@ export class AvatarService implements OnModuleInit {
           Bucket: this.bucketName,
           Key: filename,
           Body: file.buffer,
-          ContentType: file.mimetype || 'image/png',
+          ContentType: file.mimetype,
         }),
       );
     } catch (error) {
@@ -65,7 +66,7 @@ export class AvatarService implements OnModuleInit {
   async deleteAvatar(userId: string) {
     const avatar = await this.avatarRepository.findByUserId(userId);
     if (!avatar) {
-      throw new Error('Avatar not found');
+      throw new NotFoundException('Avatar not found');
     }
 
     try {
@@ -75,10 +76,11 @@ export class AvatarService implements OnModuleInit {
           Key: avatar.filename,
         }),
       );
-    } catch {
+    } catch (error) {
+      console.error('S3 delete error:', error);
       throw new InternalServerErrorException('Failed to delete avatar from S3');
     }
 
-    return this.avatarRepository.delete(userId);
+    return avatar ? this.avatarRepository.delete(userId) : null;
   }
 }
