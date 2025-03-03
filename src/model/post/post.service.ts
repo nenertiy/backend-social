@@ -5,7 +5,6 @@ import {
   HttpStatus,
   Injectable,
   NotFoundException,
-  UnauthorizedException,
 } from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto';
 
@@ -41,7 +40,7 @@ export class PostService {
   async createPost(
     userId: string,
     data: CreatePostDto,
-    file?: Express.Multer.File,
+    file: Express.Multer.File,
   ) {
     const post = await this.postRepository.createPost(userId, data);
 
