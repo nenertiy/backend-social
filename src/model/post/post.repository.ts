@@ -22,11 +22,11 @@ export class PostRepository {
     return this.prisma.post.create({ data: { ...data, userId } });
   }
 
-  async deletePost(postId: string) {
-    return this.prisma.post.delete({ where: { id: postId } });
-  }
-
   async updatePost(postId: string, data: UpdatePostDto) {
     return this.prisma.post.update({ where: { id: postId }, data });
+  }
+
+  async deletePost(postId: string) {
+    return this.prisma.post.delete({ where: { id: postId } });
   }
 }

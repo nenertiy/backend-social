@@ -17,6 +17,10 @@ export class CommentRepository {
     return this.prisma.comment.findUnique({ where: { id } });
   }
 
+  async updateComment(id: string, content: string) {
+    return this.prisma.comment.update({ where: { id }, data: { content } });
+  }
+
   async deleteComment(id: string) {
     return this.prisma.comment.delete({ where: { id } });
   }

@@ -4,6 +4,7 @@ import {
   Controller,
   Delete,
   Param,
+  Patch,
   Post,
   UseGuards,
 } from '@nestjs/common';
@@ -25,6 +26,16 @@ export class CommentController {
     @Body() content: string,
   ) {
     return this.commentService.createComment(user.id, postId, content);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch(':commentId')
+  async updateComment(
+    @DecodeUser() user: UserWithoutPassword,
+    @Param('commentId') commentId: string,
+    @Body() content: string,
+  ) {
+    return this.commentService.updateComment(user.id, commentId, content);
   }
 
   @UseGuards(JwtAuthGuard)

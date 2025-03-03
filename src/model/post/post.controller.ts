@@ -8,6 +8,7 @@ import {
   Get,
   Param,
   ParseFilePipe,
+  Patch,
   Post,
   UploadedFile,
   UseGuards,
@@ -18,6 +19,7 @@ import { CreatePostDto } from './dto/create-post.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { ApiTags } from '@nestjs/swagger';
+import { UpdatePostDto } from './dto/update-post.dto';
 
 @ApiTags('Post')
 @Controller('post')
@@ -56,6 +58,16 @@ export class PostController {
     file: Express.Multer.File,
   ) {
     return this.postService.createPost(user.id, dto, file);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch(':postId')
+  async updatePost(
+    @DecodeUser() user: UserWithoutPassword,
+    @Param('postId') postId: string,
+    @Body() dto: UpdatePostDto,
+  ) {
+    return this.postService.updatePost(user.id, postId, dto);
   }
 
   @UseGuards(JwtAuthGuard)
