@@ -31,7 +31,7 @@ type Comment {
 
 type Query {
   getAllPosts: [Post!]!
-  getPost(postId: String!): Post!
+  getPost(id: String!): Post!
   getAllComments(postId: String): [Comment!]!
 }
 

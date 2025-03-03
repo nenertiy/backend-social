@@ -5,13 +5,12 @@ import { UserModule } from '../user/user.module';
 import { AuthModule } from '../auth/auth.module';
 import { TokenModule } from '../token/token.module';
 import { GithubModule } from '../github/github.module';
-import { MulterModule } from '@nestjs/platform-express';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver } from '@nestjs/apollo';
 import { PostModule } from '../post/post.module';
 import { CommentModule } from '../comment/comment.module';
-import config from 'src/config/config';
 import { AvatarModule } from '../avatar/avatar.module';
+import config from 'src/config/config';
 
 @Module({
   imports: [
@@ -33,23 +32,22 @@ import { AvatarModule } from '../avatar/avatar.module';
         },
       }),
     }),
-    // MulterModule.register(),
     UserModule,
     AvatarModule,
     AuthModule,
     TokenModule,
     GithubModule,
-    // PostModule,
-    // CommentModule,
-    // GraphQLModule.forRoot({
-    //   driver: ApolloDriver,
-    //   autoSchemaFile: 'schema.gql',
-    //   playground: true,
-    //   uploads: {
-    //     maxFileSize: 10 * 1024 * 1024, // 5MB
-    //     maxFiles: 1,
-    //   },
-    // }),
+    PostModule,
+    CommentModule,
+    GraphQLModule.forRoot({
+      driver: ApolloDriver,
+      autoSchemaFile: 'schema.gql',
+      playground: true,
+      uploads: {
+        maxFileSize: 10 * 1024 * 1024,
+        maxFiles: 1,
+      },
+    }),
   ],
 })
 export class AppModule {}

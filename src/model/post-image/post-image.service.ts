@@ -40,7 +40,7 @@ export class PostImageService {
           Bucket: this.bucketName,
           Key: filename,
           Body: file.buffer,
-          ContentType: file.mimetype || 'image/png' || 'image/jpeg',
+          ContentType: file.mimetype,
         }),
       );
     } catch (error) {
