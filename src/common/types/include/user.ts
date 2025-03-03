@@ -4,7 +4,21 @@ export const USER_SELECT: Prisma.UserSelect = {
   id: true,
   email: true,
   username: true,
+  github: true,
   walletAddress: true,
-  avatar: true,
+  avatar: {
+    select: {
+      id: true,
+      url: true,
+      filename: true,
+    },
+  },
   posts: true,
+};
+
+export const USERS_SELECT: Prisma.UserSelect = {
+  id: true,
+  username: true,
+  github: true,
+  walletAddress: true,
 };
