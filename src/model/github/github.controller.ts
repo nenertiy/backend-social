@@ -7,13 +7,13 @@ import { Controller, Get, Param } from '@nestjs/common';
 export class GithubController {
   constructor(private readonly githubService: GithubService) {}
 
-  @ApiOperation({ summary: '' })
+  @ApiOperation({ summary: 'Профиль GitHub' })
   @Get(':github')
   findGithubProfile(@Param('github') github: string) {
     return this.githubService.findGithubProfile(github);
   }
 
-  @ApiOperation({ summary: '' })
+  @ApiOperation({ summary: 'Репозитории профиля GitHub' })
   @Get(':github/rep')
   findGithubRep(@Param('github') github: string) {
     return this.githubService.findGithubRep(github);

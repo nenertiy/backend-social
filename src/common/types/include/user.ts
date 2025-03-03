@@ -15,3 +15,10 @@ export const USER_SELECT: Prisma.UserSelect = {
   },
   posts: true,
 };
+
+export const USERS_SELECT: Prisma.UserSelect = {
+  id: true,
+  username: true,
+  github: true,
+  walletAddress: true,
+};

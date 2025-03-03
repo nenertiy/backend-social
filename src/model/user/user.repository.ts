@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../app/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { USER_SELECT } from 'src/common/types/include/user';
+import { USER_SELECT, USERS_SELECT } from 'src/common/types/include/user';
 
 @Injectable()
 export class UserRepository {
@@ -33,7 +33,7 @@ export class UserRepository {
   }
 
   async findAllUsers() {
-    return this.prisma.user.findMany({ select: USER_SELECT });
+    return this.prisma.user.findMany({ select: USERS_SELECT });
   }
 
   async createUser(data: CreateUserDto) {
