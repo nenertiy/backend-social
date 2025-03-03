@@ -8,7 +8,7 @@ export class PostRepository {
   constructor(private readonly prisma: PrismaService) {}
 
   async findOnePost(postId: string) {
-    return this.prisma.post.findMany({
+    return this.prisma.post.findUnique({
       where: { id: postId },
       include: { file: true, comments: true },
     });
