@@ -1,4 +1,3 @@
-import { AvatarService } from './../avatar/avatar.service';
 import {
   BadRequestException,
   Body,
@@ -12,19 +11,20 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { UserService } from './user.service';
-import { DecodeUser } from 'src/common/decorators/decode-user.decorator';
-import { UserWithoutPassword } from 'src/common/types/user';
-import { UpdateUserDto } from './dto/update-user.dto';
 import {
   ApiBearerAuth,
   ApiConsumes,
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { multerOptions } from 'src/config/multer.config';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { DecodeUser } from 'src/common/decorators/decode-user.decorator';
+import { UserWithoutPassword } from 'src/common/types/user';
+import { UserService } from './user.service';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { AvatarService } from './../avatar/avatar.service';
+// import { multerOptions } from 'src/config/multer.config';
 
 @Controller('user')
 @ApiTags('User')
@@ -74,24 +74,17 @@ export class UserController {
   @ApiOperation({ summary: 'Добавить аватар пользователя' })
   @ApiBearerAuth()
   @ApiConsumes('multipart/form-data')
-  @Patch('avatar')
   @UseGuards(JwtAuthGuard)
+  @Patch('avatar')
   @UseInterceptors(
     FileInterceptor('file', {
-      // storage: multer.memoryStorage(),
-      // limits: { fileSize: 5 * 1024 * 1024 },
+      limits: { fileSize: 5 * 1024 * 1024 },
     }),
   )
   async uploadAvatar(
-    @Req() req: Request & { file?: Express.Multer.File },
     @DecodeUser() user: UserWithoutPassword,
     @UploadedFile() file: Express.Multer.File,
   ) {
-    console.log('Headers:', req.headers);
-    console.log('Request body:', req.body);
-    console.log('File:', req.file);
-    console.log('File:', file);
-
     if (!file) {
       throw new BadRequestException('File is missing');
     }

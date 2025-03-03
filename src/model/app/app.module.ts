@@ -11,6 +11,7 @@ import { ApolloDriver } from '@nestjs/apollo';
 import { PostModule } from '../post/post.module';
 import { CommentModule } from '../comment/comment.module';
 import config from 'src/config/config';
+import { AvatarModule } from '../avatar/avatar.module';
 
 @Module({
   imports: [
@@ -32,8 +33,9 @@ import config from 'src/config/config';
         },
       }),
     }),
-    MulterModule.register(),
+    // MulterModule.register(),
     UserModule,
+    AvatarModule,
     AuthModule,
     TokenModule,
     GithubModule,
