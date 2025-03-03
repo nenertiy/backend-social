@@ -36,7 +36,7 @@ import config from 'src/config/config';
     TokenModule,
     GithubModule,
     PostModule,
-    // CommentModule,
+    CommentModule,
   ],
 })
 export class AppModule {}
