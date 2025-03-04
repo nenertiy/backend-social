@@ -8,12 +8,14 @@ import {
 } from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 
 @Injectable()
 export class PostService {
   constructor(
     private readonly postImageService: PostImageService,
     private readonly postRepository: PostRepository,
+    private readonly eventEmitter: EventEmitter2,
   ) {}
 
   async findPost(postId: string) {
@@ -25,6 +27,7 @@ export class PostService {
         HttpStatus.NOT_FOUND,
       );
     }
+
     return post;
   }
 
@@ -46,9 +49,10 @@ export class PostService {
     const post = await this.postRepository.createPost(userId, data);
 
     if (file) {
-      const uploadedFile = await file;
-      await this.postImageService.createImage(post.id, uploadedFile);
+      await this.postImageService.createImage(post.id, file);
     }
+
+    this.eventEmitter.emit('post.updated');
 
     return this.findPost(post.id);
   }
@@ -60,11 +64,16 @@ export class PostService {
     }
     if (post.userId !== userId) {
       throw new HttpException(
-        'Delete post is forbidden for you',
+        `You are not authorized to update this post.`,
         HttpStatus.FORBIDDEN,
       );
     }
-    return this.postRepository.updatePost(postId, dto);
+
+    await this.postRepository.updatePost(postId, dto);
+
+    this.eventEmitter.emit('post.updated');
+
+    return post;
   }
 
   async deletePost(userId, postId: string) {
@@ -74,10 +83,14 @@ export class PostService {
     }
     if (post.userId !== userId) {
       throw new HttpException(
-        'Delete post is forbidden for you',
+        `You are not authorized to delete this post.`,
         HttpStatus.FORBIDDEN,
       );
     }
-    return this.postRepository.deletePost(postId);
+    await this.postRepository.deletePost(postId);
+
+    this.eventEmitter.emit('post.updated');
+
+    return { message: 'Post deleted successfully' };
   }
 }
