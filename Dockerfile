@@ -4,8 +4,11 @@ WORKDIR /app
 
 COPY package*.json ./
 
+COPY pnpm-lock.yaml ./  
+
 RUN npm i -g pnpm && \ 
-    pnpm i
+    pnpm install --frozen-lockfile && \
+    pnpm cache delete
 
 COPY . .
 
