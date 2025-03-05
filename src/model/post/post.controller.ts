@@ -10,6 +10,7 @@ import {
   ParseFilePipe,
   Patch,
   Post,
+  Query,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -27,8 +28,20 @@ export class PostController {
   constructor(private readonly postService: PostService) {}
 
   @Get()
-  async findAllPosts() {
-    return this.postService.findPosts();
+  async findAllPosts(
+    @Query('search') search?: string,
+    @Query('take') take?: number,
+    @Query('skip') skip?: number,
+  ) {
+    // const safeTake = Math.min(Number(take) || 10, 100);
+    const safeTake = take ? Number(take) : undefined;
+    const safeSkip = Math.max(Number(skip) || 0, 0);
+
+    if (search) {
+      return this.postService.searchPosts(search, safeTake, safeSkip);
+    }
+
+    return this.postService.findPosts(safeTake, safeSkip);
   }
 
   @Get(':postId')
