@@ -14,8 +14,21 @@ export class PostRepository {
     });
   }
 
-  async findManyPosts() {
-    return this.prisma.post.findMany({ include: { file: true } });
+  async findAllPosts(take?: number, skip?: number) {
+    return this.prisma.post.findMany({ take, skip, include: { file: true } });
+  }
+
+  async searchPosts(query: string, take: number, skip: number) {
+    return this.prisma.post.findMany({
+      take,
+      skip,
+      where: {
+        OR: [
+          { title: { contains: query, mode: 'insensitive' } },
+          { content: { contains: query, mode: 'insensitive' } },
+        ],
+      },
+    });
   }
 
   async createPost(userId: string, data: CreatePostDto) {

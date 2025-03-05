@@ -31,8 +31,12 @@ export class PostService {
     return post;
   }
 
-  async findPosts() {
-    const posts = await this.postRepository.findManyPosts();
+  async searchPosts(query: string, take: number, skip: number) {
+    return this.postRepository.searchPosts(query, take, skip);
+  }
+
+  async findPosts(take?: number, skip?: number) {
+    const posts = await this.postRepository.findAllPosts(take, skip);
 
     if (!posts.length) {
       throw new HttpException(`Posts not found`, HttpStatus.NOT_FOUND);
