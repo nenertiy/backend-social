@@ -32,8 +32,22 @@ export class UserRepository {
     });
   }
 
-  async findAllUsers() {
-    return this.prisma.user.findMany({ select: USERS_SELECT });
+  async findAllUsers(take: number, skip: number) {
+    return this.prisma.user.findMany({ take, skip, select: USERS_SELECT });
+  }
+
+  async searchUsers(search: string, take: number, skip: number) {
+    return this.prisma.user.findMany({
+      take,
+      skip,
+      where: {
+        OR: [
+          { username: { contains: search, mode: 'insensitive' } },
+          { github: { contains: search, mode: 'insensitive' } },
+          { walletAddress: { contains: search, mode: 'insensitive' } },
+        ],
+      },
+    });
   }
 
   async createUser(data: CreateUserDto) {

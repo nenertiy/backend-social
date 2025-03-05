@@ -43,8 +43,12 @@ export class UserService {
     return this.userRepository.findByGithub(github);
   }
 
-  async findAllUsers() {
-    return this.userRepository.findAllUsers();
+  async findAllUsers(take: number, skip: number) {
+    return this.userRepository.findAllUsers(take, skip);
+  }
+
+  async searchUsers(search: string, take: number, skip: number) {
+    return this.userRepository.searchUsers(search, take, skip);
   }
 
   private async existUser(email: string, username: string) {

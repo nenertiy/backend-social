@@ -8,6 +8,7 @@ import {
   Param,
   ParseFilePipe,
   Patch,
+  Query,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -55,8 +56,19 @@ export class UserController {
 
   @ApiOperation({ summary: 'Получить всех пользователей' })
   @Get()
-  async findAll() {
-    return this.userService.findAllUsers();
+  async findAll(
+    @Query('search') search?: string,
+    @Query('take') take?: number,
+    @Query('skip') skip?: number,
+  ) {
+    // const safeTake = Math.min(Number(take) || 10, 100);
+    const safeTake = take ? Number(take) : undefined;
+    const safeSkip = Math.max(Number(skip) || 0, 0);
+
+    if (search) {
+      return this.userService.searchUsers(search, safeTake, safeSkip);
+    }
+    return this.userService.findAllUsers(safeTake, safeSkip);
   }
 
   @ApiOperation({ summary: 'Получить пользователя по id' })
