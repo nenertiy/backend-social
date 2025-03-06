@@ -12,10 +12,14 @@ services:
       S3_REGION: ${S3_REGION}
       S3_ENDPOINT: ${S3_ENDPOINT}
       PORT: 4000
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
     ports:
       - '4000:4000'
     depends_on:
       postgres:
+        condition: service_healthy
+      redis:
         condition: service_healthy
     command: 'pnpm run start'
     networks:
@@ -40,6 +44,20 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: redis-social
+    restart: always
+    ports:
+      - '6379:6379'
+    networks:
+      - backend
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 10s
+      timeout: 5s
+      retries: 3
 
   minio:
     image: minio/minio
