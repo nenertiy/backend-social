@@ -17,9 +17,10 @@ import * as redisStore from 'cache-manager-redis-store';
     CacheModule.registerAsync({
       isGlobal: true,
       useFactory: async (configService: ConfigService) => ({
-        store: redisStore,
+        store: redisStore.default,
         host: configService.get<string>('REDIS_HOST', 'localhost'),
         port: configService.get<number>('REDIS_PORT', 6379),
+        ttl: 60,
       }),
       inject: [ConfigService],
     }),
