@@ -8,4 +8,7 @@ export default () => ({
   S3_REGION: process.env.S3_REGION,
   S3_BUCKET_NAME: process.env.S3_BUCKET_NAME,
   S3_ENDPOINT: process.env.S3_ENDPOINT,
+
+  REDIS_HOST: process.env.REDIS_HOST,
+  REDIS_PORT: process.env.REDIS_PORT,
 });
