@@ -8,21 +8,26 @@ import { GithubModule } from '../github/github.module';
 import { PostModule } from '../post/post.module';
 import { CommentModule } from '../comment/comment.module';
 import { AvatarModule } from '../avatar/avatar.module';
+import { RedisClientOptions } from 'redis';
+import { redisStore } from 'cache-manager-redis-yet';
 import config from 'src/config/config';
-import * as redisStore from 'cache-manager-redis-store';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true, load: [config] }),
-    CacheModule.registerAsync({
-      isGlobal: true,
-      useFactory: async (configService: ConfigService) => ({
-        store: redisStore.default,
-        host: configService.get<string>('REDIS_HOST', 'localhost'),
-        port: configService.get<number>('REDIS_PORT', 6379),
-        ttl: 60,
-      }),
+    CacheModule.registerAsync<RedisClientOptions>({
+      imports: [ConfigModule],
       inject: [ConfigService],
+      isGlobal: true,
+      useFactory: async (configService: ConfigService) => {
+        return {
+          store: redisStore,
+          host: configService.get('REDIS_HOST'),
+          port: configService.get('REDIS_PORT'),
+          ttl: 60 * 60,
+          max: 1000000000000000000,
+        };
+      },
     }),
     UserModule,
     AvatarModule,
