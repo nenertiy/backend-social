@@ -38,10 +38,6 @@ export class AvatarService implements OnModuleInit {
   }
 
   async createAvatar(userId: string, file: Express.Multer.File) {
-    if (!file.buffer) {
-      throw new BadRequestException('File buffer is missing');
-    }
-
     const filename = `avatar/${userId}-avatar.png`;
 
     try {

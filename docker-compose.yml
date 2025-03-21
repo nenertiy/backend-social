@@ -21,7 +21,8 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-    command: 'pnpm run start'
+    command: >
+      sh -c "npx prisma db push && pnpm run start"
     networks:
       - backend
 
